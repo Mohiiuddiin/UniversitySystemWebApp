@@ -1,0 +1,46 @@
+﻿@using System.Web.UI.WebControls
+@model UniversitySystemMvcApp.Models.Department
+@{
+    ViewBag.Title = "SaveDepartment";
+
+}
+
+@using (Html.BeginForm())
+{
+    <div style="margin-bottom: ;">
+        <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Add Department</button>
+
+        <div class="container align-content-center" style="">
+            <hr class="bg-white" />
+            <div class="form-group">
+                @Html.LabelFor(x => x.Code, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.Code, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessageFor(x => x.Code, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Name, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+            <hr class="bg-white" />
+            <div class="form-group">
+                @if (ViewBag.Message != null)
+                {
+
+                    <h5 class="text-success" style="font-weight: bold;font-size: large">@ViewBag.Message</h5>
+                }
+            </div>
+        </div>
+    </div>
+
+
+    @RenderPage("~/Views/Department/ViewAllDepartments.cshtml")
+}
+<script src="~/Scripts/jquery-3.5.1.js"></script>
+<script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+

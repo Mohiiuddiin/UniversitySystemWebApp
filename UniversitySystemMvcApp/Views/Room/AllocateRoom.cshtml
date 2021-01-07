@@ -1,0 +1,100 @@
+﻿@model UniversitySystemMvcApp.Models.RoomAllocate
+@{
+    ViewBag.Title = "AllocateRoom";
+    
+}
+
+    
+    @using (Html.BeginForm(null, null, FormMethod.Post, new {id = "RoomAllocateForm"}))
+    {
+        <div style="border: 0pt whitesmoke groove; border-radius: 5pt; margin-bottom: 3%;">
+            <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Classroom Allocation</button>
+
+            <div class="container align-content-center" style="">
+                <hr class="bg-white"/>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DepartmentCode, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    @Html.DropDownListFor(x => x.DepartmentCode, new SelectList(ViewBag.Departments, "Value", "Text"), new {@class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;", @id = "DepartmentCode"})
+                    @Html.ValidationMessageFor(x => x.DepartmentCode, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CourseCode, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    <select class="form-control" style="font-size: large; color: black; background-color: white;" id="CourseCode" name="CourseCode">
+                        <option value="">--SELECT--</option>
+                    </select>
+                    @Html.ValidationMessageFor(x => x.CourseCode, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.RoomNo, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    @Html.DropDownListFor(x => x.RoomNo, new SelectList(ViewBag.Rooms, "Value", "Text"), new {@class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;"})
+                    @Html.ValidationMessageFor(x => x.RoomNo, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Day, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    @Html.DropDownListFor(x => x.Day, new SelectList(ViewBag.Days, "Value", "Text"), new {@class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;"})
+                    @Html.ValidationMessageFor(x => x.Day, "", new {@class = "text-danger"})
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.From, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    @Html.TextBoxFor(x => x.From, new {@class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;"})
+                    @Html.ValidationMessageFor(x => x.From, "", new {@class = "text-danger"})
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.To, new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})
+                    @Html.TextBoxFor(x => x.To, new {@class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;"})
+                    @Html.ValidationMessageFor(x => x.To, "", new {@class = "text-danger"})
+                </div>
+                <button type="submit" class="btn btn-primary">Allocate</button>
+                <hr class="bg-white"/>
+                <div class="form-group">
+                    @if (ViewBag.Message != null)
+                    {
+                        <h5 class="text-success" style="font-weight: bold; font-size: large">@ViewBag.Message</h5>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+        @*<script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>*@
+@*<script src="~/Scripts/timepicki.js"></script>*@
+        <script src="~/Scripts/mobiscroll-2.13.2.full.min.js"></script>
+    <script>
+    //$(function() {
+    //    $('#From').timepicki();
+
+    //});
+    //$(function () {
+    //    $('#To').timepicki();
+
+    //});
+    
+    $(document).ready(function () {
+        $("#From").mobiscroll({ preset: 'time', 'theme': 'android' });
+        $("#To").mobiscroll({ preset: 'time', 'theme': 'android' });
+        $("#DepartmentCode").change(function () {
+            var departmentCode = $("#DepartmentCode").val();
+
+            var json = { departmentCode: departmentCode };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseByDepartmentCode", "Teacher")',
+
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#CourseCode").empty();
+                    $("#CourseCode").append('<option value="">--SELECT--</option>');
+                    $.each(data, function (key, value) {
+                        $("#CourseCode").append('<option value=' + value.Code + '>' + value.Name + '</option>');
+
+                    });
+
+                }
+            });
+        });
+    });
+    </script>
+    
+

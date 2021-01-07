@@ -1,0 +1,118 @@
+﻿@model UniversitySystemMvcApp.Models.EnrollCourse
+@{
+    ViewBag.Title = "EnrollCourseToStudent";
+    
+}
+
+   
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "StudentEnrollForm" }))
+    {
+        <div style="padding-left: ; border: 0pt whitesmoke groove; border-radius: 5pt; margin-bottom:3% ;">
+            <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Enroll New Course</button>
+
+            <div class="container align-content-center" style="">
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.StudentId, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.DropDownListFor(x => x.StudentId,
+                        new SelectList(ViewBag.StudentsReg, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.StudentId, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Name", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("Name", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Email", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("Email", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("DepartmentCode", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("DepartmentCode", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CourseCode, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    <select class = "form-control" style = "font-size:large;font-weight:;color:black;background-color: white;" id="CourseCode" name="CourseCode">
+                        <option value="">--SELECT--</option>
+                    </select>
+                    @Html.ValidationMessageFor(x => x.CourseCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Date, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBoxFor(x => x.Date, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.Date, "", new { @class = "text-danger" })
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Enroll</button>
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @if (ViewBag.Message != null)
+                    {
+                        <h5 class="text-success" style="font-weight: bold;font-size: large">@ViewBag.Message</h5>
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+
+<script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script>
+    $('#Date').datepicker({
+        daysOfWeekDisabled: "5,6",
+        daysOfWeekHighlighted: "5,6",
+        autoclose: true
+    });
+    $(document).ready(function() {
+        $("#StudentId").change(function() {
+            var studentId = $("#StudentId").val();
+            $("#CourseCode").empty();
+            var json = { studentId: studentId };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetStudentByStudentId", "Course")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(data) {
+                    //alert(data);
+
+                    var name = data.Name;
+                    var email = data.Email;
+                    var dept = data.DepartmentCode;
+                    $("#Name").val(name);
+                    $("#Email").val(email);
+                    $("#DepartmentCode").val(dept);
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+
+        $("#StudentId").change(function () {
+            var studentId = $("#StudentId").val();
+
+            var json = { id: studentId };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseCodeByStudentId", "Student")',
+
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $("#CourseCode").empty();
+                    $("#CourseCode").append('<option value="">--SELECT--</option>');
+                    $.each(data, function (key, value) {
+                        $("#CourseCode").append('<option value=' + value.Code + '>' + value.Name + '</option>');
+
+                    });
+
+                }
+            });
+        });
+    });
+
+    </script>
+
+

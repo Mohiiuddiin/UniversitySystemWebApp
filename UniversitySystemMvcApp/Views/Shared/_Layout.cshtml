@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    @Scripts.Render("~/bundles/modernizr")
+        @*@Styles.Render("~/Content/css")*@
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/Site.css" rel="stylesheet" />
+    <link href="~/Content/timepicki.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/mobiscroll-2.13.2.full.min.css" rel="stylesheet" />
+    <link href="~/Content/DataTables/css/jquery.dataTables.min.css" rel="stylesheet" />
+    <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+    <script src="~/Scripts/jquery-3.5.1.js"></script>
+    @*<script src="~/Scripts/bootstrap.js"></script>*@
+    <script src="~/Scripts/bootstrap.bundle.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#departments').DataTable();
+        });
+    </script>
+    @*<script>
+            $(document).ready(function () {
+                $('#ViewCourseId').DataTable();
+            });
+        </script>*@
+</head>
+<body style="background-color: black; margin-bottom: 0px;">
+    @*darkslategray*@
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark" style="margin-top: 0px">
+        <a class="navbar-brand" style="color: whitesmoke; font-weight: bold;" href="#">UNIVERSITY SYSTEM</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarColor02">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a style="color: whitesmoke; font-weight: bold;" class="btn btn-light text-dark" id="btnGroupDrop2" type="button" href="~/Home/Index">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" class="" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 3.293l6 6V13.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5V9.293l6-6zm5-.793V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z" />
+                            <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z" />
+                        </svg>
+                        Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                &nbsp;
+                <li class="nav-item dropdown">
+                    <button style="color: whitesmoke; font-weight: bold;" class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Department</button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Save Department", "SaveDepartment", "Department", null, new { @class = "dropdown-item btn text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("View All Departments", "ViewAllDepartments", "Department", null, new { @class = "dropdown-item btn text-primary" })
+
+                    </div>
+                </li> &nbsp;
+                <li class="nav-item dropdown">
+                    <button style="color: whitesmoke; font-weight: bold;" class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Course</button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Save Course", "SaveCourse", "Course", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("View Course Statistics", "ViewCourseStatistics", "Course", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Un-assign Courses", "UnassignCourses", "Course", null, new { @class = "dropdown-item text-primary" })
+
+                    </div>
+                </li> &nbsp;
+                <li class="nav-item dropdown">
+                    <button style="color: whitesmoke; font-weight: bold;" class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Teacher</button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Save Teacher", "SaveTeacher", "Teacher", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Course Assign To a Teacher", "CourseAssignToTeacher", "Teacher", null, new { @class = "dropdown-item text-primary" })
+
+                    </div>
+                </li> &nbsp;
+                <li class="nav-item dropdown">
+                    <button style="color: whitesmoke; font-weight: bold;" class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Student</button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Register Student", "SaveStudent", "Student", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Student Result Update", "SaveResult", "Student", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("View Student Result", "ViewStudentResult", "Student", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Enroll Course To Student", "EnrollCourseToStudent", "Course", null, new { @class = "dropdown-item text-primary" })
+
+                    </div>
+                </li> &nbsp;
+                <li class="nav-item dropdown">
+                    <button style="color: whitesmoke; font-weight: bold;" class="dropdown-toggle btn btn-primary" type="button" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Classroom</button>
+                    <div class="dropdown-menu">
+                        @Html.ActionLink("Assign a Room", "AllocateRoom", "Room", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("View Schedules", "ViewRoomSchedule", "Room", null, new { @class = "dropdown-item text-primary" })
+                        <div class="dropdown-divider"></div>
+                        @Html.ActionLink("Reset Room Schedule", "UnallocateRooms", "Room", null, new { @class = "dropdown-item text-primary" })
+
+
+                    </div>
+                </li>
+            </ul>
+            
+                @Html.Partial("_LoginPartial")
+                @*<button class="btn btn-secondary my-2 my-sm-0 " type="submit"><i class='fas fa-user-plus' style="color: azure"></i> <b style="color: azure">Login</b> </button>
+                    <button class="btn btn-secondary my-2 my-sm-0 " type="submit"><i class="fas fa-sign-in-alt" style="color: azure"></i> <b style="color: azure">Register</b></button>*@
+            
+
+        </div>
+    </nav>
+
+
+    <div class="container body-content" style="margin-bottom:5px">
+        @RenderBody()
+    </div>
+    <div class="navbar fixed-bottom navbar-dark bg-dark">
+        <div align="center" style="color: whitesmoke; font-weight: bold">&copy; @DateTime.Now.Year Online Course & Result Management System</div>
+    </div>
+    
+    
+   
+</body>
+</html>

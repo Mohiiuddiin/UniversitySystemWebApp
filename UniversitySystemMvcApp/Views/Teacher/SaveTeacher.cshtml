@@ -1,0 +1,70 @@
+﻿@using System.Activities.Expressions
+@model UniversitySystemMvcApp.Models.Teacher
+@{
+    ViewBag.Title = "SaveTeacher";
+
+}
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "SaveTeacherForm" }))
+{
+    <div style="margin-bottom:3% ;">
+        <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Add New Teacher</button>
+
+        <div class="container align-content-center" style="">
+            <hr class="bg-white" />
+            <div class="form-group">
+                @Html.LabelFor(x => x.Name, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Address, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextAreaFor(x => x.Address, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                @Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Email, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.Email, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                @Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.ContactNo, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.ContactNo, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessageFor(x => x.ContactNo, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.DepartmentCode, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.DropDownListFor(x => x.DepartmentCode,
+                    new SelectList(ViewBag.Departments, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessageFor(x => x.DepartmentCode, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.DesignationId, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.DropDownListFor(x => x.DesignationId,
+                    new SelectList(ViewBag.Designation, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessageFor(x => x.DesignationId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.MaximumCredit, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.MaximumCredit, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                @Html.ValidationMessageFor(x => x.MaximumCredit, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(x => x.CreditTaken, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBoxFor(x => x.CreditTaken, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                @Html.ValidationMessageFor(x => x.CreditTaken, "", new { @class = "text-danger" })
+            </div>
+            <button type="submit" class="btn btn-primary">Add New Faculty</button>
+            <hr class="bg-white" />
+            <div class="form-group">
+                @if (ViewBag.Message != null)
+                {
+                    <h5 class="text-success" style="font-weight: bold;font-size: large">@ViewBag.Message</h5>
+                }
+            </div>
+        </div>
+    </div>
+
+}
+

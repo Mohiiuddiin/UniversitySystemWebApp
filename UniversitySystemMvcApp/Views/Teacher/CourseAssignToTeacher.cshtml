@@ -1,0 +1,182 @@
+﻿@using System.Activities.Debugger
+@using System.Runtime.InteropServices
+@model UniversitySystemMvcApp.Models.CourseAssign
+@{
+    ViewBag.Title = "CourseAssignToTeacher";
+
+}
+
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CourseAssign" }))
+    {
+        <div style="margin-bottom:3% ;">
+            <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Add New Teacher</button>
+
+            <div class="container align-content-center" style="">
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DepartmentCode, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.DropDownListFor(x => x.DepartmentCode,
+                        new SelectList(ViewBag.Departments, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.DepartmentCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.TeacherId, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    <select class="form-control" style="font-size:large;font-weight:;color:black;background-color: white;" id="TeacherId" name="TeacherId">
+                        <option value="">--SELECT--</option>
+                    </select>
+                    @Html.ValidationMessageFor(x => x.TeacherId, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Credit To Be Taken", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("teacherCredit", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Remaining Credit", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("remainingCredit", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.CourseCode, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    <select class="form-control" style="font-size:large;font-weight:;color:black;background-color: white;" id="CourseCode" name="CourseCode">
+                        <option value="">--SELECT--</option>
+                    </select>
+                    @Html.ValidationMessageFor(x => x.CourseCode, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Name", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("courseName", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <div class="form-group">
+                    @Html.Label("Credit", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBox("courseCredit", Model, new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                </div>
+                <button type="submit" class="btn btn-primary">Assign New Course</button>
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @if (ViewBag.Message != null)
+                    {
+                        <h5 class="text-success" style="font-weight: bold;font-size: large">@ViewBag.Message</h5>
+                    }
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <script>
+    $(document).ready(function() {
+
+        $("#DepartmentCode").change(function() {
+            var departmentCode = $("#DepartmentCode").val();
+
+            var json = { departmentCode: departmentCode };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTeacherByDepartmentCode", "Teacher")',
+
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(data) {
+                    $("#TeacherId").empty();
+                    $("#TeacherId").append('<option value="">--SELECT--</option>');
+                    $.each(data, function(key, value) {
+                        $("#TeacherId").append('<option value=' + value.Id + '>' + value.Name + '</option>');
+
+                    });
+
+                }
+            });
+        });
+    });
+    $(document).ready(function() {
+
+        $("#DepartmentCode").change(function() {
+            var departmentCode = $("#DepartmentCode").val();
+
+            var json = { departmentCode: departmentCode };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseByDepartmentCode", "Teacher")',
+
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(data) {
+                    $("#CourseCode").empty();
+                    $("#CourseCode").append('<option value="">--SELECT--</option>');
+                    $.each(data, function(key, value) {
+                        $("#CourseCode").append('<option value=' + value.Code + '>' + value.Name + '</option>');
+
+                    });
+
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+        $("#TeacherId").change(function() {
+            var teacherId = $("#TeacherId").val();
+
+            var json = { teacherId: teacherId, };
+
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetTeacherInfoByTeacherId", "Teacher")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(data) {
+
+
+                    var creditTakenTobeTaken = data.MaximumCredit;
+                    var takenCredit = data.CreditTaken;
+                    var credit = creditTakenTobeTaken - takenCredit;
+                    $("#teacherCredit").val(creditTakenTobeTaken);
+                    $("#remainingCredit").val(credit);
+
+
+                }
+            });
+
+
+        });
+
+        $("#CourseCode").change(function() {
+            var courseCode = $("#CourseCode").val();
+            var json = { courseCode: courseCode }
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetCourseByCourseCode", "Teacher")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function(data) {
+                    var name = data.Name;
+                    var credit = data.Credit;
+                    $("#courseName").val(name);
+                    $("#courseCredit").val(credit);
+
+                }
+            });
+
+
+        });
+
+
+        $(document).ready(function() {
+            $('#SubmitButton').click(function() {
+                var val1 = parseFloat($('#remainingCredit').val());
+                var val2 = parseFloat($('#courseCredit').val());
+                var val = val1 - val2;
+                if (val < 0) {
+                    var flag = confirm('Remaining credit is ' + val + '. Are you sure, you want to assign more credit?');
+                    if (flag == false)
+                        return false;
+                }
+                return true;
+            });
+        });
+    });
+    </script>
+
+
+
+
+

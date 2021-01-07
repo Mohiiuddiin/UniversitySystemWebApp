@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Un-allocateRooms";
+    
+}
+
+@using (Html.BeginForm())
+{
+    <div align="center" style="padding-left: ; border: 0pt whitesmoke groove; border-radius: 5pt; margin-bottom:3% ;">
+        <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Un-Assign Classrooms</button>
+
+
+        <div class="card text-white bg-dark col-md-6" style="">
+            <div class="card-header text-danger">Be-Careful</div>
+            <div class="card-body">
+                <h4 class="card-title text-primary">Un-Assign Classrooms</h4>
+                <p class="card-text">By Clicking The Button All Classes will be Un-Assigned.So, If you want to reset all assigned Classrooms then do this action.</p>
+            
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success btn-outline-dark btn-lg text-white" style="height: " value="Un-Assign Classrooms" data-confirm="Are you sure to UnAssign All Classroom?">Un-Allocate All Classroom</button>
+                @if (ViewBag.Message != null)
+                {
+                    <p class="text-success" style="font-size:20px;">@ViewBag.Message</p>
+                }
+            </div>
+        </div>
+    </div>
+}
+    
+    <script>
+        $(document).ready(function () {
+            jQuery('[data-confirm]').click(function (e) {
+                if (!confirm(jQuery(this).attr("data-confirm"))) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+
+

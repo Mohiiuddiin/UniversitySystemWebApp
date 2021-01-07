@@ -1,0 +1,69 @@
+﻿@model UniversitySystemMvcApp.Models.Course
+@{
+    ViewBag.Title = "SaveCourse";
+
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Course Save</title>
+    
+</head>
+<body>
+    
+    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "CourseSave" }))
+    {
+        <div style="padding-left: ; border: 0pt whitesmoke groove; border-radius: 5pt; margin-bottom:3% ;">
+            <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Add New Course</button>
+
+            <div class="container align-content-center" style="">
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Code, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBoxFor(x => x.Code, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.Code, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Name, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBoxFor(x => x.Name, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                    @Html.ValidationMessageFor(x => x.Name, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Credit, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextBoxFor(x => x.Credit, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white" })
+                    @Html.ValidationMessageFor(x => x.Credit, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.Description, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.TextAreaFor(x => x.Description, new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.Description, "", new { @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.DepartmentCode, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.DropDownListFor(x => x.DepartmentCode,
+                        new SelectList(ViewBag.Departments, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.DepartmentCode,"",new{ @class = "text-danger" })
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(x => x.SemesterId, new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                    @Html.DropDownListFor(x => x.SemesterId, new SelectList(ViewBag.Semesters, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                    @Html.ValidationMessageFor(x => x.SemesterId, "", new { @class = "text-danger" })
+                </div>
+                <button type="submit" class="btn btn-primary">Add</button>
+                <hr class="bg-white" />
+                <div class="form-group">
+                    @if (ViewBag.Message != null)
+                    {
+                        <h5 class="text-success" style="font-weight: bold;font-size: large">@ViewBag.Message</h5>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+    
+
+</body>
+</html>
+

@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewBag.Title = "ViewRoomSchedule";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "ViewRoomSchedule"
+}))
+{
+   
+    <div style="border: 0pt whitesmoke groove; border-radius: 5pt; margin-bottom:3% ;">
+        <button type="button" class="btn btn-secondary btn-lg btn-block" style="margin-top: 5%;margin-bottom: 3% ">Classroom Schedule</button>
+        <div class="form-group" align="center">
+            <h4 style="color: whitesmoke;font-weight: bold">Search Schedules By Department</h4>
+            <br />
+            @*@Html.Label("Department", new {@style = "font-size:large;font-weight:bold;color:whitesmoke;"})*@
+            @Html.DropDownList("Department", new SelectList(ViewBag.Departments, "Value", "Text", new { id = "Department" }), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+        </div>
+    </div>
+    <br />
+
+    <table id="AllocRoomTable" class="table table-hover">
+        <thead >
+            <tr class="" style="color:azure;background-color:black;font-weight: bold;font-size: large">
+                <th>Course Code</th>
+                <th>Course Name</th>
+                <th>Schedule Info</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+
+}
+<script>
+    
+    $(document).ready(function () {
+        $("#Department").change(function () {
+            $('#AllocRoomTable tbody').empty();
+            var departmentCode = $("#Department").val();
+            var json = { departmentCode: departmentCode, };
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("GetClassScheduleByDepartment", "Room")',
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(json),
+                success: function (data) {
+                    $.each(data, function (key, value) {
+                        $("#AllocRoomTable tbody").append('<tr style="color:azure;background-color:black;"><td>' + value.CourseCode + '</td><td>' + value.CourseName + '</td><td style="font-weight:bold;" class="text-success">' + value.ScheduleInfo + '</td></tr>');
+                    });
+                }
+            });
+        });
+    });
+    $(document).ready(function () {
+        $('#AllocRoomTable').DataTable();
+    });
+</script>
+@*<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/DataTables/jquery.dataTables.min.js"></script>*@
+<script>
+    
+</script>
+
+
+
+
+

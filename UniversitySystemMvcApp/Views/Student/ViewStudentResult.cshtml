@@ -1,0 +1,165 @@
+﻿@{
+    /**/
+
+    ViewBag.Title = "ViewStudentResult";
+}
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new
+{
+    id = "ViewStudentResultForm"
+}))
+{
+
+    <div style="margin-bottom:3% ;">
+        <button type="button" class="btn btn-primary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 3%;">Add New Course</button>
+
+        <div class="container align-content-center" style="">
+            <hr class="bg-white" />
+            <div class="form-group">
+                @Html.Label("StudentId", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.DropDownList("StudentId",
+                    new SelectList(ViewBag.StudentsReg, "Value", "Text"), new { @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+                @Html.ValidationMessage("StudentId", "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Name", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBox("Name", "--View--", new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+            </div>
+            <div class="form-group">
+                @Html.Label("Email", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBox("Email", "--View--", new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+            </div>
+            <div class="form-group">
+                @Html.Label("DepartmentCode", new { @style = "font-size:large;font-weight:bold;color:whitesmoke;" })
+                @Html.TextBox("DepartmentCode", "--View--", new { @readonly = "readonly", @class = "form-control", @style = "font-size:large;font-weight:;color:black;background-color: white;" })
+            </div>
+            <button type="submit" class="btn btn-primary" onclick="pdfGenerator();">Print or Get Pdf</button>
+            <hr class="bg-white" />
+        </div>
+    </div>
+    //Result View Section
+    <div style="margin-bottom: 5%">
+        <button type="button" class="btn btn-secondary btn-lg btn-block" style="margin-top: 3%; margin-bottom: 0%;">Academic Result</button>
+        <table id="ViewStudentResult" class="table table-hover" style="margin-bottom: 3%;width: 100%">
+            <thead>
+            <tr class="" style="color:azure;background-color:black">
+                <th>Course Code</th>
+                <th>Name</th>
+                <th>Grade</th>
+            </tr>
+            </thead>
+            <tbody id="getRows"></tbody>
+        </table>
+    </div>
+    //pdf generator section
+    <div id="ViewStudentResult">
+        <div id="MainSection">
+            <div id="HiddenSection" align="center" style="display: none">
+                
+                <h3 style="text-align: center; background-color: black; padding: 5px 10px; color: white; border-radius: 10px;">Academic Transcript</h3>
+                <table style="width: 100%;font-size: large">
+                    <tr>
+                        <td width="30%">Student Name: </td>
+                        <td width="70%"><label id="printName" style="font-weight: bold;"></label></td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td><label id="printEmail"></label></td>
+                    </tr>
+                    <tr>
+                        <td>Department:</td>
+                        <td><label id="printDepartment"></label></td>
+                    </tr>
+                </table>
+                <br />
+                <br />
+                <table class="table table-bordered" style="border: 1px solid black; width: 100%; border-collapse: collapse; margin-bottom: 100px;">
+                    <tr>
+                        <th style="border: 1px solid black;">Course Code</th>
+                        <th style="border: 1px solid black;">Name</th>
+                        <th style="border: 1px solid black;">Grade</th>
+                    </tr>
+                    <tbody id="printRows"></tbody>
+                </table>
+                <table width="100%">
+                    <tr>
+                        <td>
+                            <p style="text-align: left;">Date of Publication of Result: @DateTime.Now.ToString("dd-MMM-yyyy")</p>
+                        </td>
+                        <td><h4 style="text-align: right;">Controller of Examination</h4></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+<script language="javascript">
+    function pdfGenerator() {
+        var printPage = document.getElementById('MainSection');
+        var printWindow = window.open('left=300,top=100,width=400,height=400');
+        printWindow.document.write(printPage.innerHTML);
+        printWindow.document.getElementById('HiddenSection').style.display = 'block';
+        printWindow.document.close();
+        printWindow.focus();
+        printWindow.print();
+        printWindow.close();
+        return false;
+    }
+</script>
+<script>
+        $(document).ready(function() {
+            $("#StudentId").change(function () {
+                var stId = $("#StudentId").val();
+
+                $("#myData").empty();
+                var json = { studentId: stId };
+
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetStudentByStudentId", "Course")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                        //alert(data);
+
+                        var name = data.Name;
+                        var email = data.Email;
+                        var deptCode = data.DepartmentCode;
+                        $("#Name").val(name);
+                        $("#Email").val(email);
+                        $("#DepartmentCode").val(deptCode);
+                        $("#printName").text(name);
+                        $("#printEmail").text(email);
+                        $("#printDepartment").text(deptCode);
+                    }
+                });
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetResultViewByStudentId", "Student")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+
+                        var i = 0;
+
+                        $.each(data, function (index, value) {
+
+                            var row = $("<tr style='color: azure; background - color: black'><td>" + value.CourseCode + "</td><td>" + value.Name + "</td><td>" + value.Grade + "</td></tr>");
+                            $("#getRows").append(row);
+                            var row2 = $("<tr class='table-dark'><td>" + value.CourseCode + "</td><td>" + value.Name + "</td><td>" + value.Grade + "</td></tr>");
+                            $("#printRows").append(row2);
+
+                        });
+                    }
+                });
+
+            });
+
+        });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#ViewCourseId').DataTable();
+    });
+</script>

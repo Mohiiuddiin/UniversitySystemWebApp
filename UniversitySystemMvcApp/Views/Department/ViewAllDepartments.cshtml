@@ -1,0 +1,42 @@
+﻿@using UniversitySystemMvcApp.Models
+@model IEnumerable<UniversitySystemMvcApp.Models.Department>
+@{
+    ViewBag.Title = "ShowAllDepartments";
+}
+
+
+<button type="button" class="btn btn-secondary btn-lg btn-block" style="margin-top: 5%;margin-bottom: 3% ">View All Departments</button>
+<div style="margin-bottom:5% ">
+<table id="departments" class="table table-hover" style="margin-top: 2%; margin-bottom: 2%;">
+    @*<table id="departments">*@
+    <thead>
+        <tr class="table-primary" style="font-weight: bold;font-size: large">
+            <td>Sl</td>
+            <td>Department Code</td>
+            <td>Department Name</td>
+            <td>Action</td>
+        </tr>
+    </thead>
+    <tbody>
+        @{int i = 0;}
+        @foreach (Department department in ViewBag.Departments)
+        {
+            {
+                i++;
+            }
+            <tr class="" style="color:azure;background-color:black">
+                <td>@i</td>
+                <td>@department.Code</td>
+                <td>@department.Name</td>
+                <td>
+                    <button type="submit" class="btn btn-secondary">Edit</button>
+                    <button type="submit" class="btn btn-secondary">Details</button>
+                    <button type="submit" class="btn btn-secondary">Remove</button>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+
+</table>
+</div>
