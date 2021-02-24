@@ -192,6 +192,7 @@
     <Compile Include="Gateway\DesignationGateway.cs" />
     <Compile Include="Gateway\EnrollCourseGateway.cs" />
     <Compile Include="Gateway\GradeGateway.cs" />
+    <Compile Include="Gateway\HomeGateway.cs" />
     <Compile Include="Gateway\RoomAllocateGateway.cs" />
     <Compile Include="Gateway\RoomGateway.cs" />
     <Compile Include="Gateway\SemesterGateway.cs" />
@@ -213,6 +214,11 @@
     <Compile Include="Manager\StudentManager.cs" />
     <Compile Include="Manager\StudentResultManager.cs" />
     <Compile Include="Manager\TeacherManager.cs" />
+    <Compile Include="Migrations\202102241741337_auth.cs" />
+    <Compile Include="Migrations\202102241741337_auth.Designer.cs">
+      <DependentUpon>202102241741337_auth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CourseAssign.cs" />
@@ -805,6 +811,7 @@
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
+    <Content Include="Views\Home\UserInformation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -817,6 +824,11 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202102241741337_auth.resx">
+      <DependentUpon>202102241741337_auth.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
